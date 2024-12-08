@@ -1,0 +1,33 @@
+.container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    transition: left 1s;
+    background-color: white;
+
+
+}
+
+.sidebar {
+    width: 240px;
+    height: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.toggle {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    left: 260px;
+    background-color: white;
+    font-size: 28px;
+    opacity: 0.2;
+    transition: opacity .5s
+}
+
+.toggle:hover {
+    opacity: 1;
+}
