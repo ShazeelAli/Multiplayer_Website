@@ -1,3 +1,6 @@
+import { ClientToServerEvents, ServerToClientEvents } from "common"
+import { Socket } from "socket.io-client"
+
 export default class Player {
     name: string
     id: string

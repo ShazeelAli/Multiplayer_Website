@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
 import { GamesFull } from "../utils/game";
 import createQuery from "utils/createQuery";
+import styles from "./index.module.css"
 export default function Home() {
   /** @type {[string, (value: string) => void]} */
-  const [gameName, setGameName] = useState("NO ROOM FOUND");
+  const [gameName, setGameName] = useState("Enter a room code or host a game");
   const [roomCode, setRoomCode] = useState("")
   const [validRoom, setValidRoom] = useState(false)
   const [playerName, setPlayerName] = useState("")
+  const [charactersRemaining, setCharactersRemaining] = useState(15)
   const router = useRouter()
 
 
@@ -30,7 +32,8 @@ export default function Home() {
   }
 
   const handleInputName = (e) => {
-    const fieldValue = e.target.value;
+    const fieldValue: string = e.target.value;
+    setCharactersRemaining(15 - fieldValue.length)
     setPlayerName(fieldValue)
   }
 
@@ -44,10 +47,11 @@ export default function Home() {
   async function getRoomAvailable(roomCodeToFind) {
     setRoomCode(roomCodeToFind)
     if (!roomCodeToFind) {
-      setGameName("NO ROOM FOUND");
+      setGameName("Enter a room code or host a game")
       setValidRoom(false);
       return;
     }
+
     var url = `/api/server/room_code/${roomCodeToFind}`;
     try {
       const response = await fetch(url, {
@@ -76,22 +80,35 @@ export default function Home() {
 
   }
   return (
-    <div className="frameDiv">
-      <h1>{gameName}</h1>
-      < div className='nameBox' >
-        <label>Name : </label> <input type="text" name="Name" onChange={handleInputName} />
-      </div>
-      < div className='joinBox' >
-        <label>Room_Code : </label>
-        < input type="text" name="Room_Code" onChange={handleInputRoom} defaultValue={roomCode} />
-        <button onClick={onPressJoin} disabled={!validRoom || !(playerName.trim().length > 0)
-        } > Join </button>
-      </div>
-      <div>
-        <button onClick={onPressHost} disabled={!(playerName.trim().length > 0)}> Host </button>
+    <div className={styles.outerFrame}>
+
+      <div className={styles.headerBar}>
+        <h1>RANDOM PARTY PACK</h1>
       </div>
 
+      <div className={styles.innerFrame}>
+        <h3>{gameName}</h3>
+        <div className={styles.input_container} >
 
+          <div className={styles.name_label_container}>
+            <div className={styles.label}>Name</div>
+            <div>{charactersRemaining}</div>
+          </div>
+
+          <input type="text" name="Name" onChange={handleInputName} className={styles.text_input} maxLength={15} />
+        </div>
+
+
+        < div className={styles.input_container} >
+          <p className={styles.label}>Room Code</p>
+          <input type="text" name="Room_Code" onChange={handleInputRoom} defaultValue={roomCode} className={styles.text_input} />
+        </div>
+
+        <div className={styles.button_container}>
+          <button onClick={onPressHost} disabled={!(playerName.trim().length > 0)} className={styles.button}> Host </button>
+          <button onClick={onPressJoin} disabled={!validRoom || !(playerName.trim().length > 0)} className={styles.button} > Join </button>
+        </div>
+      </div>
     </ div >
 
   );

@@ -6,8 +6,6 @@ import styles from './gameFrame.module.css'
 export default function gameFrame({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
     const IFrameForMessage = useRef()
     const [display, setDisplay] = useState(<h1 style={{ width: "100%", height: "100%", display: 'flex', alignItems: "center", justifyContent: 'center' }}>LOADING</h1>)
-    // const [display, setDisplay] = useState(<h1 style={{ width: "100%", height: "100%", display: 'flex', alignItems: "center", justifyContent: 'center' }}>LOADING</h1>)
-    // var display = <h1 style={{ width: "100%", height: "100%", display: 'flex', alignItems: "center", justifyContent: 'center' }}>LOADING</h1>
     useEffect(() => {
         if (GamesFull.has(roomState.currentGame)) {
             var current_game = GamesFull.get(roomState.currentGame)

@@ -5,12 +5,14 @@ import { ClientToServerEvents, ServerToClientEvents } from "common"
 
 export default class RoomState {
     roomCode: string
+    host: Player
     players: Object
     inactive_players: Object
     currentGame: GamesEnum
-    constructor(roomCode: string, currentGame: GamesEnum) {
+    constructor(roomCode: string, currentGame: GamesEnum, host: Player) {
         this.roomCode = roomCode
         this.currentGame = currentGame
+        this.host = host
         this.players = {}
         this.inactive_players = {}
     }
@@ -29,6 +31,10 @@ export default class RoomState {
         delete this.inactive_players[playerToReactivate.name]
         this.players[playerToReactivate.name] = playerToReactivate
         playerToReactivate.id = newSocketID
+    }
+
+    setHost(hostPlayer: Player) {
+        this.host = hostPlayer
     }
 
 }

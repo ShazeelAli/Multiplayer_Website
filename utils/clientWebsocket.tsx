@@ -20,9 +20,8 @@ async function socketInitializer(clientws: clientWebsocket, _callback: Function)
 
 
 export default class clientWebsocket {
-    id: Number
+    id: String
     socket: Socket<ServerToClientEvents, ClientToServerEvents>
-
     constructor() {
         this.socket = null
     }
@@ -35,6 +34,7 @@ export default class clientWebsocket {
     getINITFromServer(message) {
         this.id = message.id
     }
+
 }
 
 

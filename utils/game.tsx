@@ -1,7 +1,9 @@
 import Loading from "components/Games/Loading"
 import Chatroom from "components/Games/Chatroom"
+import FibbageMain from "components/Games/FibbageClone/FibbageMain"
 import RoomState from "./roomState"
 import ClientWebsocket from "./clientWebsocket"
+
 export class Game {
     gameName: string
     gameType: GameType
@@ -25,12 +27,14 @@ export enum GameType {
 export enum GamesEnum {
     LOADING,
     LOBBY,
-    CHATROOM
+    CHATROOM,
+    FIBBAGE
 }
 
 export const GamesFull = new Map<GamesEnum, Game>([
     [GamesEnum.LOADING, new Game("Loading", GameType.WEB, false, null, Loading)],
     [GamesEnum.LOBBY, new Game("Lobby", GameType.GODOT, false, "/WebRTCTestIFrame2/WebRTCTest.html")],
     [GamesEnum.CHATROOM, new Game("Chatroom", GameType.WEB, false, null, Chatroom)],
+    [GamesEnum.FIBBAGE, new Game("Fibbage", GameType.WEB, false, null, FibbageMain)],
 ])
 

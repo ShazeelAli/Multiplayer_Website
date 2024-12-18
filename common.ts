@@ -1,3 +1,4 @@
+import Player from "utils/player"
 import RoomState from "utils/roomState"
 
 export interface ServerToClientEvents {
@@ -14,6 +15,7 @@ export interface ClientToServerEvents {
     host: () => void
     join: (roomCode: string) => void
     relay: (msg: Object) => void
+    updateScore: (playerToUpdate: Player, scoreToAdd: number) => void
 
 }
 

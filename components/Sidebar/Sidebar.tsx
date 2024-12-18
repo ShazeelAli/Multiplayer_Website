@@ -14,7 +14,7 @@ export default function Sidebar({ roomState }: { roomState: RoomState }) {
     const qrCodeRef = useRef<HTMLDivElement>(null);
     const quickJoinButton = useRef<HTMLButtonElement>(null);
     const codeCopyButton = useRef<HTMLButtonElement>(null);
-    const linkToShare = "values-register.gl.at.ply.gg:64484/" + createQuery("", { "room_code": roomState.roomCode })
+    const linkToShare = "" + createQuery("", { "room_code": roomState.roomCode })
     const { Canvas } = useQRCode();
     const toggle = () => {
         if (sidebarRef.current && toggleRef.current && containerRef.current) {

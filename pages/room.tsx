@@ -14,13 +14,10 @@ import createQuery from "utils/createQuery"
 export default function Room() {
     const router = useRouter()
     var clientWsRef: MutableRefObject<ClientWebsocket> = useRef<ClientWebsocket>(new ClientWebsocket())
-    var [yourPlayer, setYourPlayer] = useState<Player>(null)
-    var [roomName, setRoomName] = useState("HELLO")
     var [connected, setConnected] = useState(false)
-    var [roomState, setRoomState] = useState<RoomState>(new RoomState('LOADING', GamesEnum.LOADING))
-    var sidebarRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
-    var mainContentRef: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null)
-    var sidebarButtonRef: MutableRefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null)
+    var [roomState, setRoomState] = useState<RoomState>(new RoomState('LOADING', GamesEnum.LOADING, new Player("pass", "pass")))
+
+
 
 
     function sendPlayerData() {
@@ -82,7 +79,7 @@ export default function Room() {
 
     return (
         <div className="frameDiv">
-            <div className={styles.content} ref={mainContentRef}>
+            <div className={styles.content}>
                 {sidebar}
                 {display}
             </div>

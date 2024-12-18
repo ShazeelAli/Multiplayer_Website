@@ -67,7 +67,7 @@ const SocketHandler = (req, res) => {
             })
 
             socket.on('host', () => {
-                var room = new RoomState(create_room_code(), GamesEnum.CHATROOM)
+                var room = new RoomState(create_room_code(), GamesEnum.FIBBAGE, clients.get(socket))
                 room.addPlayer(clients.get(socket))
                 rooms.set(room.roomCode, room)
                 console.log(rooms)
@@ -109,7 +109,7 @@ const SocketHandler = (req, res) => {
             socket.on('relay', (msg) => {
                 var player: Player = clients.get(socket)
                 var room: RoomState = rooms.get(player.room_code)
-                msg['player_name'] = player.name
+                msg['player'] = player
                 io.to(player.room_code).emit('relayReceive', msg)
             })
 
@@ -127,6 +127,14 @@ const SocketHandler = (req, res) => {
                 socket.leave(player.room_code)
 
             })
+
+            socket.on('updateScore', (playerToUpdate, scoreToAdd) => {
+                var tempSocket = io.sockets.sockets.get(playerToUpdate.id)
+                var player = clients.get(tempSocket)
+                player.score += scoreToAdd
+                syncRoomState(io, rooms.get(clients.get(socket).room_code))
+
+            })
         })
 
 
@@ -139,7 +147,6 @@ const SocketHandler = (req, res) => {
 
 function createPlayer(playerName, socket) {
     var player = new Player(playerName, socket.id)
-    player.score += Math.random() * 100
     clients.set(socket, player)
 }
 
