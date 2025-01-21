@@ -8,7 +8,7 @@ import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
 import Transition from "../Transition/Transition";
 
 export default function Win({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
-
+    const socket = clientWebsocket.socket
     const [close, setClose] = useState<boolean>(false)
     const [topPlayer, setTopPlayer] = useState<Player>(new Player("null", "null"))
     useEffect(() => {
@@ -28,15 +28,25 @@ export default function Win({ roomState, clientWebsocket }: { roomState: RoomSta
         setTopPlayer(tempTopPlayer)
     }, [roomState])
 
+    const onContinue = () => {
+        setClose(true)
+        setTimeout(() => {
+            socket.emit('relay', {
+                code: 'restart'
+            })
+        }, 2000)
+    }
+
     return (
-        <div className={sharedStyles.full}>
-            <Transition close={false} open={true}></Transition>
-            <div>
-                <h1 className={sharedStyles.basic}>WINNER</h1>
-                <div className={sharedStyles.basic}>{topPlayer.name}</div>
+        <div className={[sharedStyles.full].join(' ')}>
+            <Transition close={close} open={true}></Transition>
+            <div className={[sharedStyles.full, styles.container].join(' ')}>
+                <h1 className={[sharedStyles.basic, styles.padding].join(' ')}>WINNER</h1>
+                <div className={[sharedStyles.basic, styles.padding].join(' ')} style={{ fontSize: "3em" }}>{topPlayer.name}</div>
+                <button className={sharedStyles.button} onClick={onContinue}>Continue</button>
             </div>
 
-        </div >
+        </div>
 
     )
 }

@@ -135,7 +135,38 @@ const SocketHandler = (req, res) => {
                 syncRoomState(io, rooms.get(clients.get(socket).room_code))
 
             })
+            socket.on('updateScoreAll', (scoreToAdd) => {
+                var player: Player = clients.get(socket)
+                var room: RoomState = rooms.get(player.room_code)
+                for (const player_name in room.players) {
+                    room.players[player_name].score += scoreToAdd
+                }
+                syncRoomState(io, room)
+            })
+            socket.on('setScore', (playerToUpdate, score) => {
+                var tempSocket = io.sockets.sockets.get(playerToUpdate.id)
+                var player = clients.get(tempSocket)
+                player.score = score
+                syncRoomState(io, rooms.get(clients.get(socket).room_code))
+            })
+            socket.on('setScoreAll', (score) => {
+                var player: Player = clients.get(socket)
+                var room: RoomState = rooms.get(player.room_code)
+                for (const player_name in room.players) {
+                    room.players[player_name].score = score
+                }
+                syncRoomState(io, room)
+            })
+
+            socket.on('changeGame', (nextGameEnum) => {
+                var player: Player = clients.get(socket)
+                var room: RoomState = rooms.get(player.room_code)
+                room.currentGame = nextGameEnum;
+                syncRoomState(io, room)
+            })
         })
+
+
 
 
     }

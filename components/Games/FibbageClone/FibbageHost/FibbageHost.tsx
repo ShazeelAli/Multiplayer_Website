@@ -120,6 +120,11 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
                         })
                     }
                     break;
+                case "restart":
+                    alreadyChosenQuestions.current = []
+                    socket.emit('setScoreAll', 0)
+                    setGameState(FibbageStatesEnum.START)
+
 
             }
         })
