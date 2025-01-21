@@ -7,6 +7,27 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+button {
+    font-size: larger;
+    background-color: #8a2be2;
+    border-style: none;
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+    margin: 5px;
+    transition: 0.5s;
+    transition-property: background, color;
+}
+
+button:disabled {
+    background-color: #180729;
+    color: gray;
+}
+
+button:hover:enabled {
+    background-color: #9360c2;
+}
+
 iframe {
     height: 100%;
     width: 100%;

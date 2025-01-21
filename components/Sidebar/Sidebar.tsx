@@ -20,7 +20,7 @@ export default function Sidebar({ roomState }: { roomState: RoomState }) {
         if (sidebarRef.current && toggleRef.current && containerRef.current) {
             //we check if the references to both of them exist
             if (containerRef.current.style.left == "0px") {
-                containerRef.current.style.left = "-260px";
+                containerRef.current.style.left = "-265px";
                 toggleRef.current.innerText = "►"
 
             }
@@ -36,7 +36,7 @@ export default function Sidebar({ roomState }: { roomState: RoomState }) {
         navigator.clipboard.writeText(linkToShare)
         quickJoinButton.current.textContent = "Copied to clipboard"
         setTimeout(() => {
-            quickJoinButton.current.textContent = "Click for quick join link"
+            quickJoinButton.current.textContent = "Quick join link"
         }, 3000)
     }
     const copyRoomCode = () => {
@@ -48,16 +48,21 @@ export default function Sidebar({ roomState }: { roomState: RoomState }) {
         <div ref={containerRef} className={styles.container}>
             <div ref={sidebarRef} className={styles.sidebar}>
 
-                <span style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
-                    <span style={{ display: "flex", alignItems: "center" }}>
-                        <h3 className={styles.roomCode}>{roomState.roomCode}</h3>
-                        <button onClick={copyRoomCode} style={{ fontSize: "15px", padding: 0, marginLeft: "10px" }}>📋</button>
+                <span className={styles.top_half} >
+                    <span className={styles.title_row}>
+                        <h3 className={styles.room_code}>{roomState.roomCode}</h3>
+                        <button onClick={copyRoomCode} style={{ fontSize: "25px", padding: 0, paddingBottom: "4px", marginLeft: "10px" }}>📋</button>
                     </span>
-                    <button ref={quickJoinButton} onClick={getQuickLink}>Click for quick join link</button>
-                    <Canvas text={linkToShare} />
+                    <button ref={quickJoinButton} onClick={getQuickLink}>Quick join link</button>
+                    <Canvas text={linkToShare} options={{
+                        color: {
+                            light: "#ca9cf4",
+
+                        }
+                    }} />
                 </span>
 
-                <hr></hr>
+                <hr style={{ border: "5px solid #8a2be2" }}></hr>
                 <PlayerList playerList={roomState.players}></PlayerList>
 
             </div>

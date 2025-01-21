@@ -1,0 +1,48 @@
+.top_layer {
+    font-family: var(--font-medieval-sharp);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: wheat;
+    background-image: url("/TruthKingdom/Gate/Closed.png");
+    background-size: 100% 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+
+}
+
+.shutter_close {
+    animation: close 2s normal forwards ease-in-out;
+}
+
+.shutter_open {
+    animation: open 5s normal forwards ease-in-out;
+}
+
+@keyframes open {
+    from {
+        height: 100vh;
+    }
+
+    50% {
+        height: 100vh;
+    }
+
+    to {
+        height: 0vh;
+    }
+}
+
+@keyframes close {
+    from {
+        height: 0vh;
+    }
+
+    to {
+        height: 100vh;
+    }
+}

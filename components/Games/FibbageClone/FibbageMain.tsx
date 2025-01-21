@@ -6,6 +6,10 @@ import RoomState from "utils/roomState";
 import FibbageClient from "./FibbageClient/FibbageClient";
 import FibbageHost from "./FibbageHost/FibbageHost";
 
+import { MedievalSharp } from 'next/font/google'
+export const medieval_sharp = MedievalSharp({ weight: ["400"], subsets: ["latin"], variable: "--font-medieval-sharp" })
+
+import sharedStyles from "./SharedStyles.module.css"
 export default function FibbageMain({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
     const chatAreaRef = useRef<HTMLDivElement>();
     const [msgList, setMsgList] = useState<JSX.Element[]>([])
@@ -20,7 +24,7 @@ export default function FibbageMain({ roomState, clientWebsocket }: { roomState:
 
 
     return (
-        <div>
+        <div className={sharedStyles.full} style={medieval_sharp.style}>
             {display}
         </div >
 

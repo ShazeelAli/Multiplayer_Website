@@ -1,0 +1,28 @@
+.player_icon {
+    width: 100px;
+    height: 20px;
+    background-color: burlywood;
+    border: 5px solid brown;
+    text-align: center;
+    padding: 2px;
+    position: absolute;
+    transition: left 1s, top 1s;
+    z-index: 0;
+    animation: splash 1s normal forwards ease-in-out;
+}
+
+@keyframes splash {
+    from {
+        opacity: 0;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}

@@ -91,8 +91,8 @@ export default function Home() {
         <div className={styles.input_container} >
 
           <div className={styles.name_label_container}>
-            <div className={styles.label}>Name</div>
-            <div>{charactersRemaining}</div>
+            <span className={styles.label}>Name</span>
+            <span>{charactersRemaining}</span>
           </div>
 
           <input type="text" name="Name" onChange={handleInputName} className={styles.text_input} maxLength={15} />
@@ -105,8 +105,8 @@ export default function Home() {
         </div>
 
         <div className={styles.button_container}>
-          <button onClick={onPressHost} disabled={!(playerName.trim().length > 0)} className={styles.button}> Host </button>
-          <button onClick={onPressJoin} disabled={!validRoom || !(playerName.trim().length > 0)} className={styles.button} > Join </button>
+          <button onClick={onPressHost} disabled={!(playerName.trim().length > 0)} > Host </button>
+          <button onClick={onPressJoin} disabled={!validRoom || !(playerName.trim().length > 0)} > Join </button>
         </div>
       </div>
     </ div >

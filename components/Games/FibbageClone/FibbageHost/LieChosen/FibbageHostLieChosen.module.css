@@ -1,0 +1,158 @@
+.question {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 85%;
+    height: 100vh;
+
+}
+
+.disappear {
+    animation: disappear 2s normal ease-in-out;
+}
+
+@keyframes disappear {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(0);
+    }
+}
+
+.lie_container {
+    display: grid;
+    height: 60vh;
+    margin: 5vh;
+    width: 100%;
+    grid-template-columns: 33% 33% 33%;
+}
+
+
+
+.lie {
+    border-radius: 10px;
+    height: 18vh;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+    animation: enlarge 10s normal forwards ease-in-out;
+
+}
+
+@keyframes enlarge {
+    from {
+        position: relative;
+        border-radius: 10px;
+        height: 18vh;
+        margin: 10px;
+        width: auto;
+        z-index: 9;
+    }
+
+    5% {
+        position: absolute;
+        left: 10%;
+        top: 10vh;
+        height: 40vh;
+        width: 50%;
+        border-width: 2vh;
+        transform: scale(1);
+    }
+
+    10% {
+        position: absolute;
+        left: 24%;
+        top: 23vh;
+        /* height: 92vh; */
+        height: 41vh;
+        /* width: 93%; */
+        width: 46%;
+        transform: scale(2);
+        border-width: 2vh;
+    }
+
+    90% {
+        position: absolute;
+        left: 24%;
+        top: 23vh;
+        /* height: 92vh; */
+        height: 41vh;
+        /* width: 93%; */
+        width: 46%;
+        transform: scale(2);
+        border-width: 2vh;
+    }
+
+    95% {
+        position: absolute;
+        left: 10%;
+        top: 10vh;
+        height: 40vh;
+        width: 50%;
+        border-width: 2vh;
+        transform: scale(1);
+        z-index: 9;
+    }
+
+    to {
+        position: relative;
+        border-radius: 10px;
+        height: 18vh;
+        margin: 10px;
+        width: auto;
+        z-index: 1;
+    }
+}
+
+.player_chose {
+    border-radius: 5px;
+    margin: 10px;
+    padding: 1%;
+    opacity: 0;
+    text-align: center;
+    font-size: small;
+    animation: splash 0.5s normal forwards ease-in-out;
+}
+
+@keyframes splash {
+    from {
+        opacity: 0;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.footer {
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 5%;
+    padding-right: 5%;
+    height: 7vh;
+    align-items: center;
+}

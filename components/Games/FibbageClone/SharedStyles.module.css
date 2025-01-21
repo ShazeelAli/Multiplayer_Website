@@ -1,0 +1,20 @@
+.basic {
+    background-color: burlywood;
+    border: 5px solid brown;
+    border-radius: 10px;
+    font-family: "--font-medieval-sharp";
+}
+
+.full {
+    height: 100vh;
+}
+
+.button {
+    background-color: burlywood;
+    border: 5px solid brown;
+    font-family: "--font-medieval-sharp";
+}
+
+.button:hover:enabled {
+    background-color: brown;
+}

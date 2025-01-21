@@ -3,7 +3,7 @@ import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
 
-import FibbageHostLie from "../FibbageHost/FibbageHostLieSubmit";
+import FibbageHostLie from "../FibbageHost/LieSubmit/FibbageHostLieSubmit";
 import FibbageClientStart from "./FibbageClientStart";
 import FibbageClientLieSubmit from "./FibbageClientLieSubmit";
 import { FibbageStatesEnum } from "../FibbageTypes";
@@ -49,7 +49,7 @@ export default function FibbageClient({ roomState, clientWebsocket }: { roomStat
 
 
     return (
-        <div>
+        <div style={{ width: "100%", height: "100%" }}>
             {display}
         </div >
 

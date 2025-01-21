@@ -2,12 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
-import FibbageHostLieSubmit from "./FibbageHostLieSubmit";
-import FibbageHostStart from "./FibbageHostStart";
+import FibbageHostLieSubmit from "./LieSubmit/FibbageHostLieSubmit";
+import FibbageHostStart from "./Start/FibbageHostStart";
 
 import { FibbageStatesEnum } from "../FibbageTypes";
-import FibbageHostLieChoose from "./FibbageHostLieChoose";
-import FibbageHostLieChosen from "./FibbageHostLieChosen";
+import FibbageHostLieChoose from "./LieChoose/FibbageHostLieChoose";
+import FibbageHostLieChosen from "./LieChosen/FibbageHostLieChosen";
+import FibbageHostViewScore from "./View_Score/FibbageHostViewScore";
+
+import styles from "./FibbageHost.module.css"
+import Win from "./Win/Win";
 export default function FibbageHost({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
 
     const [gameState, setGameState] = useState<FibbageStatesEnum>(FibbageStatesEnum.START)
@@ -34,11 +38,16 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
             display = <FibbageHostLieSubmit roomState={roomState} clientWebsocket={clientWebsocket} lieList={lieList} currentQuestion={questions[currentQuestion.current]}></FibbageHostLieSubmit>
             break;
         case FibbageStatesEnum.LIE_CHOOSE:
-            display = <FibbageHostLieChoose roomState={roomState} clientWebsocket={clientWebsocket} playersChose={playersChose} amountPlayersChosen={amountPlayersChosen} currentQuestion={questions[currentQuestion.current]}></FibbageHostLieChoose>
+            display = <FibbageHostLieChoose roomState={roomState} clientWebsocket={clientWebsocket} playersChose={playersChose} lieList={lieList} amountPlayersChosen={amountPlayersChosen} currentQuestion={questions[currentQuestion.current]}></FibbageHostLieChoose>
             break;
         case FibbageStatesEnum.LIE_CHOSEN:
             display = <FibbageHostLieChosen roomState={roomState} clientWebsocket={clientWebsocket} playersChose={playersChose} lieList={lieList} currentQuestion={questions[currentQuestion.current]}></FibbageHostLieChosen>
-
+            break;
+        case FibbageStatesEnum.VIEW_SCORE:
+            display = <FibbageHostViewScore roomState={roomState} clientWebsocket={clientWebsocket} playersChose={playersChose} lieList={lieList} currentQuestion={questions[currentQuestion.current]}></FibbageHostViewScore>
+            break;
+        case FibbageStatesEnum.END:
+            display = <Win roomState={roomState} clientWebsocket={clientWebsocket}></Win>
 
     }
 
@@ -70,9 +79,6 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
                         newLieList.set(answer, answerList[answer])
                     }
                     var newPlayersChose: Map<string, Player[]> = new Map<string, Player[]>()
-                    newLieList.forEach((player, lie) => {
-                        newPlayersChose.set(lie, [])
-                    })
 
                     setLieList(newLieList)
                     setPlayersChose(newPlayersChose)
@@ -80,21 +86,33 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
                     break;
                 case "lie_chose":
                     setAmountPlayersChosen(amountPlayersChosen + 1)
-                    var newAnswerArray = [...playersChose.get(msg['lie']), msg['player']]
                     var newPlayersChose = new Map<string, Player[]>(playersChose)
-                    newPlayersChose.set(msg['lie'], newAnswerArray)
+                    if (!newPlayersChose.has(msg['lie'])) {
+                        newPlayersChose.set(msg['lie'], [msg['player']])
+                    } else {
+                        var newAnswerArray = [...playersChose.get(msg['lie']), msg['player']]
+                        newPlayersChose.set(msg['lie'], newAnswerArray)
+                    }
                     setPlayersChose(newPlayersChose)
 
                     break;
                 case "lies_chosen":
                     setGameState(FibbageStatesEnum.LIE_CHOSEN)
                     break;
+                case "end_lie_viewing":
+                    if (current_round.current >= 1) {
+                        setGameState(FibbageStatesEnum.END)
+                    }
+                    else {
+                        setGameState(FibbageStatesEnum.VIEW_SCORE)
+                    }
+                    break;
                 case "next_round":
                     if (current_round.current == 3) {
                         socket.emit('relay', {
                             code: "game_finish"
                         })
-                        setGameState(FibbageStatesEnum.END)
+
                     } else {
                         current_round.current += 1
                         socket.emit('relay', {
@@ -104,7 +122,7 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
                     break;
 
             }
-        }) // Include dependencies to ensure the effect updates with state changes
+        })
         return () => {
             socket.off('relayReceive')
         }
@@ -113,7 +131,7 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
 
 
     return (
-        <div>
+        <div className={styles.outer_container} >
             {display}
         </div >
 
