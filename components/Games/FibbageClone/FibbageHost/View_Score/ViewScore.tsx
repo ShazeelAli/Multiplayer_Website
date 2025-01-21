@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
-import styles from "./FibbageHostViewScore.module.css"
+import styles from "./ViewScore.module.css"
 import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
 import Transition from "../Transition/Transition";
 export default function FibbageHostViewScore({ roomState, clientWebsocket, playersChose, lieList, currentQuestion }: { roomState: RoomState, clientWebsocket: clientWebsocket, playersChose: Map<string, Player[]>, lieList: Map<string, Player>, currentQuestion: string[] }) {

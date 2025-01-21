@@ -8,7 +8,7 @@ import FibbageHostStart from "./Start/FibbageHostStart";
 import { FibbageStatesEnum } from "../FibbageTypes";
 import FibbageHostLieChoose from "./LieChoose/FibbageHostLieChoose";
 import FibbageHostLieChosen from "./LieChosen/FibbageHostLieChosen";
-import FibbageHostViewScore from "./View_Score/FibbageHostViewScore";
+import FibbageHostViewScore from "./View_Score/ViewScore";
 
 import styles from "./FibbageHost.module.css"
 import Win from "./Win/Win";
