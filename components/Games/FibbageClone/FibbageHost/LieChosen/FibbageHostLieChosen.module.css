@@ -18,7 +18,7 @@
 }
 
 .disappear {
-    animation: disappear 2s normal ease-in-out;
+    animation: disappear 2s forwards normal ease-in-out;
 }
 
 @keyframes disappear {

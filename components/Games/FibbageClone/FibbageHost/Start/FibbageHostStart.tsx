@@ -6,7 +6,7 @@ import styles from "./FibbageHostStart.module.css"
 import FibbagePlayerDisplay from "../PlayerDisplay/FibbagePlayerDisplay";
 import Transition from "../Transition/Transition";
 import Timer from "../Timer/Timer";
-
+import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
 
 export default function FibbageHostStart({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
 
@@ -47,7 +47,7 @@ export default function FibbageHostStart({ roomState, clientWebsocket }: { roomS
             <FibbagePlayerDisplay player_names={player_names}></FibbagePlayerDisplay>
             <div className={styles.inner_container}>
                 {playersRemainingMessage}
-                <button className={styles.button} onClick={startGame} disabled={!(Object.keys(roomState.players).length >= 2)}>START GAME</button>
+                <button className={sharedStyles.button} onClick={startGame} disabled={!(Object.keys(roomState.players).length >= 2)}>START GAME</button>
             </div>
         </div >
 

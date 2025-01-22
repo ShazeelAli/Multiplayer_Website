@@ -23,9 +23,13 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
     const alreadyChosenQuestions = useRef<number[]>([])
     const questions: string[][] = [
 
-        ["THIS IS Q1", "Q1 Answer"],
-        ["Q2", "Q2 Answer"],
-        ['Q3', "Q3 Answer"]
+        ["Who was the 3rd wife of Claudius renowned for her promiscuity?", "Valeria Messalina"],
+        ["If you need some quick cash, a Harvard graduate made a website in 2015 stating that he'll give somebody $10,000 if they simply ____", "find him a girlfriend"],
+        ['Due to a highly unusual service they offer, the Gideon Putnam Resort & Spa in New York is informally known as the _____ Hotel.', "Divorce"],
+        ["Instead of putting baby teeth under the pillow for the Tooth Fairy, children in Greece are advised to take their baby teeth and _____.", "throw them on the roof"],
+        ["Michelle Joni operates a unique preschool in Brooklyn. All the students in the preschool are ____.", "Adults"],
+        ["The Hilton Chicago Magnificent Mile hotel asked guests in the spring and summer of 2015 to keep their windows closed. They were concerned about ____.", "Flying Spiders"],
+        ["Because it would 'only lead to teasing or disparaging thoughts', a French judge ruled in 2014 that a couple could not name their newborn child ____.", "Nutella"],
 
     ]
 
@@ -100,7 +104,7 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
                     setGameState(FibbageStatesEnum.LIE_CHOSEN)
                     break;
                 case "end_lie_viewing":
-                    if (current_round.current >= 1) {
+                    if (current_round.current >= 3) {
                         setGameState(FibbageStatesEnum.END)
                     }
                     else {

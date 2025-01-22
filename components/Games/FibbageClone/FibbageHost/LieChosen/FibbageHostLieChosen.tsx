@@ -16,7 +16,7 @@ export default function FibbageHostLieChosen({ roomState, clientWebsocket, playe
 
         setTimeout(() => {
             setClose(true)
-        })
+        }, 1000)
         setTimeout(() => {
             socket.emit('relay', {
                 code: "end_lie_viewing"

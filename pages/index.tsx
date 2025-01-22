@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
-import { GamesFull } from "../utils/game";
+import Head from "next/head";
 import createQuery from "utils/createQuery";
 import styles from "./index.module.css"
+import Image from "next/image";
+import { Atma } from "next/font/google";
+const atma = Atma({ weight: ["700"], subsets: ["latin"], variable: "--font-atma" })
+
 export default function Home() {
   /** @type {[string, (value: string) => void]} */
   const [gameName, setGameName] = useState("Enter a room code or host a game");
@@ -11,8 +15,6 @@ export default function Home() {
   const [playerName, setPlayerName] = useState("")
   const [charactersRemaining, setCharactersRemaining] = useState(15)
   const router = useRouter()
-
-
 
   const onPressJoin = (e) => {
     if (validRoom) {
@@ -81,9 +83,9 @@ export default function Home() {
   }
   return (
     <div className={styles.outerFrame}>
-
-      <div className={styles.headerBar}>
-        <h1>RANDOM PARTY PACK</h1>
+      <div className={styles.headerBar} style={atma.style}>
+        <Image src="/icon.png" width={80} height={80} alt="Henry Games Logo" />
+        <h1>HENRY GAMES</h1>
       </div>
 
       <div className={styles.innerFrame}>
