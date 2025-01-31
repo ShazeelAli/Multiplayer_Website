@@ -1,16 +1,20 @@
 import PlayerList from "components/playerList";
-import { useEffect, useRef, useState } from "react";
+import { DOMElement, useEffect, useRef, useState, useMemo } from "react";
 import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
 import styles from "./FibbageHostLieChosen.module.css"
 import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
 import Transition from "../Transition/Transition";
+import useSound from "use-sound";
 export default function FibbageHostLieChosen({ roomState, clientWebsocket, playersChose, lieList, currentQuestion }: { roomState: RoomState, clientWebsocket: clientWebsocket, playersChose: Map<string, Player[]>, lieList: Map<string, Player>, currentQuestion: string[] }) {
     const socket = clientWebsocket.socket
+    const [popPlay, popData] = useSound("/TruthKingdom/pop.mp3", { interrupt: true, volume: 1 })
+    const [whooshPlay, whooshData] = useSound("/TruthKingdom/whoosh.mp3", { interrupt: true, volume: 1 })
+    const [trueLieDisplay, setTrueLieDisplay] = useState<JSX.Element[]>([])
     const containerRef = useRef<HTMLDivElement>()
     const [close, setClose] = useState<boolean>(false)
-
+    const playerChoseLieNameRef = useRef<HTMLSpanElement>();
     const onContinue = () => {
         containerRef.current.classList.add(styles.disappear)
 
@@ -42,73 +46,93 @@ export default function FibbageHostLieChosen({ roomState, clientWebsocket, playe
     var lieDisplay: JSX.Element[] = []
     var i = 0
     var truth = ""
-    lieList.forEach((Player, lie) => {
+    useEffect(() => {
+        lieList.forEach((Player, lie) => {
+            if (lieList.get(lie) == null) {
+                truth = lie
+                return;
+            }
+            var playersChoseThisLieDisplay: JSX.Element[] = []
+            var j = 0
+            var animDelay = i * 10;
+            var bigAnimDelay = animDelay
+            if (playersChose.has(lie)) {
+                var playerList = playersChose.get(lie)
+                i++
+                playerList.forEach((player) => {
+                    var smallAnimDelay = animDelay + 2 + (j * 0.2)
+                    var playerNameDisplay = <span className={[styles.player_chose, sharedStyles.basic].join(" ")} style={{ animationDelay: smallAnimDelay + "s" }} key={player.name} ref={playerChoseLieNameRef}>{player.name}</span>
+                    playersChoseThisLieDisplay.push(playerNameDisplay)
 
-        if (lieList.get(lie) == null) {
-            truth = lie
-            return;
-        }
+                    setTimeout(popPlay, (smallAnimDelay + 0.5) * 1000)
+
+                    j++;
+                })
+
+
+                setTimeout(whooshPlay, animDelay * 1000)
+                setTimeout(popPlay, (animDelay + 5) * 1000)
+                setTimeout(whooshPlay, (animDelay + 9) * 1000)
+            }
+            else {
+                animDelay = (playersChose.size) * 10
+                bigAnimDelay = -animDelay
+            }
+
+
+
+            lieDisplay.push(<div className={[styles.lie, sharedStyles.basic].join(" ")} style={{ animationDelay: bigAnimDelay + "s" }} key={lie}>
+                {lie}
+                {playersChoseThisLieDisplay}
+                <div className={[styles.player_chose, sharedStyles.basic].join(" ")} style={{
+                    animationDelay: (animDelay + 5) + "s",
+                    backgroundColor: "red"
+                }}>{lieList.get(lie).name}'s Lie</div>
+
+            </div>)
+
+
+
+
+
+        })
+
         var playersChoseThisLieDisplay: JSX.Element[] = []
-        var j = 0
         var animDelay = i * 10;
-        var bigAnimDelay = animDelay
-        if (playersChose.has(lie)) {
-            var playerList = playersChose.get(lie)
-            i++
+
+        if (playersChose.has(truth)) {
+            var playerList = playersChose.get(truth)
+            console.log(playerList)
+            var j = 0
             playerList.forEach((player) => {
+                console.log(player)
                 var smallAnimDelay = animDelay + 2 + (j * 0.2)
-                playersChoseThisLieDisplay.push(<span className={[styles.player_chose, sharedStyles.basic].join(" ")} style={{ animationDelay: smallAnimDelay + "s" }} key={player.name}>{player.name}</span>)
+                var playerNameDisplay = <span className={[styles.player_chose, sharedStyles.basic].join(" ")} style={{ animationDelay: smallAnimDelay + "s" }} key={player.name} ref={playerChoseLieNameRef}>{player.name}</span>
+                playersChoseThisLieDisplay.push(playerNameDisplay)
+                setTimeout(popPlay, (smallAnimDelay + 0.5) * 1000)
                 j++;
             })
-
-        }
-        else {
-            animDelay = (playersChose.size) * 10
-            bigAnimDelay = -animDelay
         }
 
 
+        setTimeout(whooshPlay, animDelay * 1000)
+        setTimeout(popPlay, (animDelay + 5) * 1000)
+        setTimeout(whooshPlay, (animDelay + 9) * 1000)
+        lieDisplay.push(<div className={[styles.lie, sharedStyles.basic].join(" ")} style={{ animationDelay: animDelay + "s" }} key={truth}>
+            {truth}
+            <div>
+                {playersChoseThisLieDisplay}
+            </div>
 
-        lieDisplay.push(<div className={[styles.lie, sharedStyles.basic].join(" ")} style={{ animationDelay: bigAnimDelay + "s" }} key={lie}>
-            {lie}
-            {playersChoseThisLieDisplay}
             <div className={[styles.player_chose, sharedStyles.basic].join(" ")} style={{
-                animationDelay: (animDelay) + "s",
-                backgroundColor: "red"
-            }}>{lieList.get(lie).name}'s Lie</div>
+                animationDelay: (animDelay + 5) + "s",
+                backgroundColor: "green"
+            }}>Correct</div>
+
         </div>)
+        setTrueLieDisplay(lieDisplay)
+    }, [])
 
-
-
-    })
-
-    var playersChoseThisLieDisplay: JSX.Element[] = []
-    var animDelay = i * 10;
-
-    if (playersChose.has(truth)) {
-        var playerList = playersChose.get(truth)
-        console.log(playerList)
-        var j = 0
-        playerList.forEach((player) => {
-            console.log(player)
-            var smallAnimDelay = animDelay + 2 + (j * 0.2)
-            playersChoseThisLieDisplay.push(<span className={[styles.player_chose, sharedStyles.basic].join(" ")} style={{ animationDelay: smallAnimDelay + "s" }} key={player.name}>{player.name}</span>)
-            j++;
-        })
-    }
-
-
-    lieDisplay.push(<div className={[styles.lie, sharedStyles.basic].join(" ")} style={{ animationDelay: animDelay + "s" }} key={truth}>
-        {truth}
-        <div>
-            {playersChoseThisLieDisplay}
-        </div>
-
-        <div className={[styles.player_chose, sharedStyles.basic].join(" ")} style={{
-            animationDelay: (animDelay + 5) + "s",
-            backgroundColor: "green"
-        }}>Correct</div>
-    </div>)
 
 
 
@@ -124,7 +148,7 @@ export default function FibbageHostLieChosen({ roomState, clientWebsocket, playe
                     <h1>{currentQuestion[0]}</h1>
                 </div>
                 <div className={[styles.lie_container, sharedStyles.basic].join(" ")}>
-                    {lieDisplay}
+                    {trueLieDisplay}
                 </div>
 
                 <div className={[styles.footer, sharedStyles.basic].join(" ")}>

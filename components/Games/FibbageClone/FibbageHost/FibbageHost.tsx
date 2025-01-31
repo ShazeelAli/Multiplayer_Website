@@ -9,20 +9,22 @@ import { FibbageStatesEnum } from "../FibbageTypes";
 import FibbageHostLieChoose from "./LieChoose/FibbageHostLieChoose";
 import FibbageHostLieChosen from "./LieChosen/FibbageHostLieChosen";
 import FibbageHostViewScore from "./View_Score/ViewScore";
-
 import styles from "./FibbageHost.module.css"
 import Win from "./Win/Win";
+import HostTutorial from "./Tutorial/Tutorial";
 export default function FibbageHost({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
 
     const [gameState, setGameState] = useState<FibbageStatesEnum>(FibbageStatesEnum.START)
     const [lieList, setLieList] = useState<Map<string, Player>>(new Map<string, Player>())
     const [playersChose, setPlayersChose] = useState<Map<string, Player[]>>(new Map<string, Player[]>())
     const [amountPlayersChosen, setAmountPlayersChosen] = useState<number>(0)
+
     const current_round = useRef<number>(1)
     const currentQuestion = useRef<number>(0)
     const alreadyChosenQuestions = useRef<number[]>([])
-    const questions: string[][] = [
 
+
+    const questions: string[][] = [
         ["Who was the 3rd wife of Claudius renowned for her promiscuity?", "Valeria Messalina"],
         ["If you need some quick cash, a Harvard graduate made a website in 2015 stating that he'll give somebody $10,000 if they simply ____", "find him a girlfriend"],
         ['Due to a highly unusual service they offer, the Gideon Putnam Resort & Spa in New York is informally known as the _____ Hotel.', "Divorce"],
@@ -30,7 +32,6 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
         ["Michelle Joni operates a unique preschool in Brooklyn. All the students in the preschool are ____.", "Adults"],
         ["The Hilton Chicago Magnificent Mile hotel asked guests in the spring and summer of 2015 to keep their windows closed. They were concerned about ____.", "Flying Spiders"],
         ["Because it would 'only lead to teasing or disparaging thoughts', a French judge ruled in 2014 that a couple could not name their newborn child ____.", "Nutella"],
-
     ]
 
     var socket = clientWebsocket.socket
@@ -38,6 +39,9 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
 
     var display = <FibbageHostStart roomState={roomState} clientWebsocket={clientWebsocket}></FibbageHostStart>
     switch (gameState) {
+        case FibbageStatesEnum.TUTORIAL:
+            display = <HostTutorial clientWebsocket={clientWebsocket}></HostTutorial>
+            break
         case FibbageStatesEnum.LIE_SUBMIT:
             display = <FibbageHostLieSubmit roomState={roomState} clientWebsocket={clientWebsocket} lieList={lieList} currentQuestion={questions[currentQuestion.current]}></FibbageHostLieSubmit>
             break;
@@ -62,6 +66,9 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
     useEffect(() => {
         socket.on('relayReceive', (msg) => {
             switch (msg['code']) {
+                case "start_tutorial":
+                    setGameState(FibbageStatesEnum.TUTORIAL)
+                    break
                 case "start_game":
                     while (alreadyChosenQuestions.current.includes(currentQuestion.current)) {
                         currentQuestion.current = getRandomInt(questions.length)
@@ -138,9 +145,9 @@ export default function FibbageHost({ roomState, clientWebsocket }: { roomState:
     }, [socket, lieList, playersChose, amountPlayersChosen, current_round.current])
 
 
-
     return (
         <div className={styles.outer_container} >
+
             {display}
         </div >
 

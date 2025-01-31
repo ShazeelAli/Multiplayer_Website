@@ -5,24 +5,28 @@ import RoomState from "utils/roomState";
 import styles from "./FibbageHostStart.module.css"
 import FibbagePlayerDisplay from "../PlayerDisplay/FibbagePlayerDisplay";
 import Transition from "../Transition/Transition";
-import Timer from "../Timer/Timer";
 import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
-
+import FibbageBGM from "../../BGM";
 export default function FibbageHostStart({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
 
-    var socket = clientWebsocket.socket
+
     const [close, setClose] = useState<boolean>(false)
-    const timer = useRef()
-    const startGame = () => {
+    const [playBGM, setPlayBGM] = useState<boolean>(false)
+    var socket = clientWebsocket.socket
+    const startTutorial = () => {
         setClose(true)
+        setPlayBGM(false)
         setTimeout(() => {
             socket.emit("relay", {
-                code: "start_game"
+                code: "start_tutorial"
             })
-        }, 2000)
-
-
+        }, 3000)
     }
+
+    useEffect(() => {
+        setTimeout(() => { setPlayBGM(true) }, 5000)
+    }, []
+    )
 
     var playersRemaining = 2 - Object.keys(roomState.players).length
     var playersRemainingMessage = <h3>{playersRemaining + " People needed to start"}</h3>
@@ -36,18 +40,17 @@ export default function FibbageHostStart({ roomState, clientWebsocket }: { roomS
             continue
         }
         player_names.push(player_name)
-
     }
 
 
     return (
         <div>
-
             <Transition close={close} open={true}></Transition>
             <FibbagePlayerDisplay player_names={player_names}></FibbagePlayerDisplay>
+            <FibbageBGM play={playBGM} />
             <div className={styles.inner_container}>
                 {playersRemainingMessage}
-                <button className={sharedStyles.button} onClick={startGame} disabled={!(Object.keys(roomState.players).length >= 2)}>START GAME</button>
+                <button className={sharedStyles.button} onClick={startTutorial} disabled={!(Object.keys(roomState.players).length >= 2)}>START GAME</button>
             </div>
         </div >
 
