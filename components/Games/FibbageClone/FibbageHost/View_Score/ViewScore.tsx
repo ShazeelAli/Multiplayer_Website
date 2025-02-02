@@ -17,7 +17,7 @@ export default function FibbageHostViewScore({ roomState, clientWebsocket, playe
             socket.emit('relay', {
                 code: "next_round"
             })
-        }, 2000)
+        }, 3000)
     }
 
     useEffect(() => {

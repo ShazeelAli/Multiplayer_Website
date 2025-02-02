@@ -68,7 +68,7 @@ export default function FibbageHostLieSubmit({ roomState, clientWebsocket, lieLi
                 answerList: newLieListObject
 
             })
-        }, 2000)
+        }, 3000)
 
 
     }

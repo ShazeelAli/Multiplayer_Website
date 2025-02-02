@@ -16,11 +16,11 @@
 }
 
 .shutter_close {
-    animation: close 2s normal forwards ease-in-out;
+    animation: close 3s normal forwards linear;
 }
 
 .shutter_open {
-    animation: open 5s normal forwards ease-in-out;
+    animation: open 5s normal forwards linear;
 }
 
 @keyframes open {
@@ -28,7 +28,7 @@
         height: 100vh;
     }
 
-    50% {
+    40% {
         height: 100vh;
     }
 
