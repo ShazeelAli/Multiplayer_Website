@@ -131,7 +131,7 @@ export default function FibbageHostLieChosen({ roomState, clientWebsocket, playe
 
         </div>)
         setTrueLieDisplay(lieDisplay)
-    }, [])
+    }, [whooshData.sound, popData.sound])
 
 
 

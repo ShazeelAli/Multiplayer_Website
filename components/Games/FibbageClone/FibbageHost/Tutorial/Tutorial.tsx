@@ -22,15 +22,18 @@ export default function HostTutorial({ clientWebsocket }: { clientWebsocket: cli
                 skip()
             }
         })
-    }, [])
+    }, [startGameRef.current, introData])
 
     useEffect(() => {
-        setTimeout(introPlay, 5000)
-        startGameRef.current = setTimeout(() => {
-            socket.emit("relay", {
-                code: "start_game"
-            })
-        }, 50000)
+        if (introData.sound) {
+            setTimeout(introPlay, 4000)
+            startGameRef.current = setTimeout(() => {
+                socket.emit("relay", {
+                    code: "start_game"
+                })
+            }, 50000)
+        }
+
     }, [introData.sound])
 
 
