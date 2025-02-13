@@ -9,27 +9,32 @@ import styles from './room.module.css'
 import Player from "../utils/player"
 import Sidebar from "components/Sidebar/Sidebar"
 import createQuery from "utils/createQuery"
+import clientWebsocket from "utils/clientWebsocket"
 
 
 export default function Room() {
     const router = useRouter()
     var clientWsRef: MutableRefObject<ClientWebsocket> = useRef<ClientWebsocket>(new ClientWebsocket())
-    var [connected, setConnected] = useState(false)
-    var [roomState, setRoomState] = useState<RoomState>(new RoomState('LOADING', GamesEnum.LOADING, new Player("pass", "pass")))
 
+    var [connected, setConnected] = useState(false)
+    var [roomState, setRoomState] = useState<RoomState>(new RoomState('LOADING', GamesEnum.LOADING, new Player("pass", "pass", 0)))
+    var [localPlayer, setLocalPlayer] = useState<Player>()
 
 
 
     function sendPlayerData() {
         var query = router.query
+        clientWsRef.current.name = query.player_name as string
         // Send Player Name
         clientWsRef.current.socket.emit('sendPlayerData', query.player_name as string)
         // When Confirmed the Server has received PlayerData then either join or host 
-        clientWsRef.current.socket.on('playerDataReceived', onPlayerDataReceived)
+        clientWsRef.current.socket.on('playerDataReceived', (player) => { onPlayerDataReceived(player) })
     }
 
-    function onPlayerDataReceived() {
+    function onPlayerDataReceived(player: Player) {
         var query = router.query
+        setLocalPlayer(player)
+        localPlayer = player
         if (query.code == "JOIN") {
             Join(query.room_code)
         } else if (query.code == "HOST") {
@@ -49,8 +54,10 @@ export default function Room() {
     }
 
     function JoinSuccess(room: RoomState) {
+        setLocalPlayer(room.players[localPlayer.name])
         setRoomState(room)
         clientWsRef.current.socket.on('updateRoomState', (room) => setRoomState(room))
+
     }
 
     function HostSuccess(room: RoomState) {
@@ -74,8 +81,8 @@ export default function Room() {
     }, [router.isReady, connected])
 
 
-    var display = <GameFrame clientWebsocket={clientWsRef.current} roomState={roomState} ></GameFrame>
-    var sidebar = <Sidebar roomState={roomState}></Sidebar>
+    var display = <GameFrame clientWebsocket={clientWsRef.current} roomState={roomState} player={localPlayer}></GameFrame>
+    var sidebar = <Sidebar clientWebsocket={clientWsRef.current} roomState={roomState}></Sidebar>
 
     return (
         <div className="frameDiv">

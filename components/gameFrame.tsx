@@ -3,9 +3,13 @@ import { Game, GamesFull, GamesEnum, GameType } from '../utils/game'
 import RoomState from '../utils/roomState'
 import clientWebsocket from 'utils/clientWebsocket'
 import styles from './gameFrame.module.css'
-export default function gameFrame({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
-    const IFrameForMessage = useRef()
+import Player from 'utils/player'
+export default function gameFrame({ roomState, clientWebsocket, player }: { roomState: RoomState, clientWebsocket: clientWebsocket, player: Player }) {
+    const IFrameRef = useRef<HTMLIFrameElement>()
     const [display, setDisplay] = useState(<h1 style={{ width: "100%", height: "100%", display: 'flex', alignItems: "center", justifyContent: 'center' }}>LOADING</h1>)
+    const [frameLoaded, setFrameLoaded] = useState<boolean>(false)
+    const bufferedPackets = useRef([])
+    var socket = clientWebsocket.socket
     useEffect(() => {
         if (GamesFull.has(roomState.currentGame)) {
             var current_game = GamesFull.get(roomState.currentGame)
@@ -14,7 +18,7 @@ export default function gameFrame({ roomState, clientWebsocket }: { roomState: R
                 setDisplay(<iframe
                     src={frameSrc}
                     width='100%'
-                    ref={IFrameForMessage}
+                    ref={IFrameRef}
                     height='100%'
                     scrolling='no'
 
@@ -28,10 +32,86 @@ export default function gameFrame({ roomState, clientWebsocket }: { roomState: R
         }
     }, [roomState])
 
+    useEffect(() => {
+        if (IFrameRef.current != null) {
+            var msg = {
+                code: "room_state_changed",
+                room: roomState
+            }
+            IFrameRef.current.contentWindow.postMessage(JSON.stringify(msg))
+        }
+    }, [roomState])
 
+    useEffect(() => {
+        if (socket != null) {
+            socket.on('relayReceive', (msg) => {
+                if (frameLoaded) {
+                    received_packet(msg)
+                }
+                else {
 
+                    bufferedPackets.current.push(msg)
+                    // console.log(bufferedPackets)
+                }
 
+            })
+        }
+    }, [socket, frameLoaded])
 
+    useEffect(() => {
+        if (frameLoaded) {
+            // console.log(bufferedPackets)
+            bufferedPackets.current.forEach(
+                (msg) => { received_packet(msg) }
+            )
+        }
+
+    }, [frameLoaded])
+    useEffect(() => {
+        if (IFrameRef.current == null) {
+            window.onmessage = (event) => { }
+            return
+        }
+
+        window.onmessage = (event) => {
+            var message = event.data
+            // console.log("BROWSER :")
+            // console.log(message)
+            if (!message.code) {
+                return;
+            }
+            switch (message.code) {
+                case "frame_loaded":
+                    var host = false
+                    if (roomState.host.id == clientWebsocket.socket.id) {
+                        host = true
+                    }
+                    const msg = {
+                        code: "INIT",
+                        id: player.webRTCID,
+                        name: player.name,
+                        host: host,
+                        room: roomState
+                    }
+
+                    IFrameRef.current.contentWindow.postMessage(JSON.stringify(msg))
+                    setFrameLoaded(true)
+                    break
+                case "relay":
+                    clientWebsocket.socket.emit('relayTarget', message.targetID, message.data)
+                    break
+            }
+        }
+
+        return () => { window.onmessage = (event) => { } }
+    })
+
+    function received_packet(message) {
+        if (IFrameRef.current == null) {
+            return
+        }
+        IFrameRef.current.contentWindow.postMessage(JSON.stringify(message))
+    }
     return (
         <div style={{ width: "100%", height: "100%" }}>
             {display}

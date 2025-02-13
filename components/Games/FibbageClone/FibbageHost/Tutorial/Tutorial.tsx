@@ -15,8 +15,6 @@ export default function HostTutorial({ clientWebsocket }: { clientWebsocket: cli
 
     var socket = clientWebsocket.socket
     useEffect(() => {
-
-
         socket.on('relayReceive', (msg) => {
             if (msg['code'] == "skip") {
                 skip()

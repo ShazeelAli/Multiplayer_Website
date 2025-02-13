@@ -4,9 +4,14 @@ import PlayerList from '../playerList';
 import RoomState from 'utils/roomState';
 import createQuery from 'utils/createQuery';
 import { useQRCode } from 'next-qrcode';
-const sidebarWidth = "240px"
-export default function Sidebar({ roomState }: { roomState: RoomState }) {
+import clientWebsocket from 'utils/clientWebsocket';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { GamesEnum } from 'utils/game';
 
+const sidebarWidth = "240px"
+export default function Sidebar({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
+    const router = useRouter()
     //refs to the DOM elements for further style manipulations
     const sidebarRef = useRef<HTMLDivElement>(null);
     const toggleRef = useRef<HTMLDivElement>(null);
@@ -43,7 +48,12 @@ export default function Sidebar({ roomState }: { roomState: RoomState }) {
         navigator.clipboard.writeText(roomState.roomCode)
     }
 
-
+    var returnToLobbyDisable = true
+    if (clientWebsocket.socket) {
+        if (clientWebsocket.socket?.id == roomState.host?.id) {
+            returnToLobbyDisable = false
+        }
+    }
     return (
         <div ref={containerRef} className={styles.container}>
             <div ref={sidebarRef} className={styles.sidebar}>
@@ -64,6 +74,13 @@ export default function Sidebar({ roomState }: { roomState: RoomState }) {
 
                 <hr style={{ border: "5px solid #8a2be2" }}></hr>
                 <PlayerList playerList={roomState.players}></PlayerList>
+                <span style={{
+                    display: "flex",
+                    flexDirection: "row"
+                }}>
+                    <button onClick={() => { clientWebsocket.socket.emit('changeGame', GamesEnum.LOBBY) }} disabled={returnToLobbyDisable}>Return To Lobby</button>
+                    <button onClick={() => { router.push("https://localhost") }}>Leave</button>
+                </span>
 
             </div>
             <div ref={toggleRef} className={styles.toggle} onClick={toggle}>◄</div>

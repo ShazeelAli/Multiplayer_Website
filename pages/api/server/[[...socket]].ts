@@ -6,8 +6,10 @@ import Player from "../../../utils/player"
 import { Socket } from 'socket.io';
 const clients = new Map<Socket<ClientToServerEvents, ServerToClientEvents>, Player>();
 const rooms = new Map<string, RoomState>();
+
 const ROOM_CODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 var peers_count = 0;
+var current_max_peer_id = 0;
 
 function create_room_code() {
     var id = ""
@@ -23,7 +25,8 @@ function create_room_code() {
 }
 
 function create_peer_id() {
-    return Math.floor(Math.random() * 100000)
+    current_max_peer_id += 1
+    return current_max_peer_id
 }
 
 const SocketHandler = (req, res) => {
@@ -62,12 +65,13 @@ const SocketHandler = (req, res) => {
 
         io.on("connection", socket => {
             socket.on('sendPlayerData', (playerName: string) => {
-                createPlayer(playerName, socket)
-                socket.emit('playerDataReceived')
+                var player: Player = createPlayer(playerName, socket)
+
+                socket.emit('playerDataReceived', player)
             })
 
             socket.on('host', () => {
-                var room = new RoomState(create_room_code(), GamesEnum.FIBBAGE, clients.get(socket))
+                var room = new RoomState(create_room_code(), GamesEnum.LOBBY, clients.get(socket))
                 room.addPlayer(clients.get(socket))
                 rooms.set(room.roomCode, room)
                 console.log(rooms)
@@ -87,6 +91,7 @@ const SocketHandler = (req, res) => {
                         var oldPlayer = room.inactive_players[player.name]
                         room.reactivatePlayer(oldPlayer, socket.id)
                         clients.set(socket, oldPlayer)
+                        // socket.emit('playerDataReceived', oldPlayer)
 
                     } else if (room.players.hasOwnProperty(player.name)) {
                         socket.emit('joinFail', "NAME TAKEN")
@@ -112,6 +117,18 @@ const SocketHandler = (req, res) => {
                 msg['player'] = player
                 io.to(player.room_code).emit('relayReceive', msg)
             })
+
+            socket.on('relayTarget', (targetID, msg) => {
+                var player: Player = clients.get(socket)
+                var room: RoomState = rooms.get(player.room_code)
+                msg['sender_id'] = player.webRTCID
+                var targetSocket = io.sockets.sockets.get(targetID)
+                targetSocket.emit('relayReceive', msg)
+                console.log("HERE")
+                console.log(msg)
+            })
+
+
 
             socket.on('disconnect', () => {
 
@@ -177,8 +194,9 @@ const SocketHandler = (req, res) => {
 
 
 function createPlayer(playerName, socket) {
-    var player = new Player(playerName, socket.id)
+    var player = new Player(playerName, socket.id, create_peer_id())
     clients.set(socket, player)
+    return player
 }
 
 function syncRoomState(io: Server<ClientToServerEvents, ServerToClientEvents>, roomToSync: RoomState) {

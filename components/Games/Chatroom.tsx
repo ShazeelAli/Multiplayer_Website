@@ -13,9 +13,9 @@ export default function Chatroom({ roomState, clientWebsocket }: { roomState: Ro
     useEffect(() => {
         socket.on('relayReceive', (msg) => {
             console.log(msg)
-            var playerName = msg['player_name']
+            var playerName = msg['player'].name
 
-            setMsgList([...msgList, <p>{playerName + ":" + msg["message"]}</p>])
+            setMsgList([...msgList, <div key={msg['message']}>{playerName + ":" + msg["message"]}</div>])
         })
     }, [])
 

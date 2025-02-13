@@ -2,7 +2,7 @@ import Player from "utils/player"
 import RoomState from "utils/roomState"
 import { GamesEnum } from "utils/game"
 export interface ServerToClientEvents {
-    playerDataReceived: () => void
+    playerDataReceived: (player: Player) => void
     hostSuccess: (room: RoomState) => void
     joinSuccess: (room: RoomState) => void
     joinFail: (error: string) => void
