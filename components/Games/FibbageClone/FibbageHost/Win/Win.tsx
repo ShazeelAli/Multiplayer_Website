@@ -10,7 +10,7 @@ import Transition from "../Transition/Transition";
 export default function Win({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
     const socket = clientWebsocket.socket
     const [close, setClose] = useState<boolean>(false)
-    const [topPlayer, setTopPlayer] = useState<Player>(new Player("null", "null"))
+    const [topPlayer, setTopPlayer] = useState<Player>(new Player("null", "null", 0))
     useEffect(() => {
         var tempTopPlayer: Player = null;
 

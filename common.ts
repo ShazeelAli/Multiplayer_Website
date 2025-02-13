@@ -15,6 +15,7 @@ export interface ClientToServerEvents {
     host: () => void
     join: (roomCode: string) => void
     relay: (msg: Object) => void
+    relayTarget: (targetID: string, msg: Object) => void
     updateScore: (playerToUpdate: Player, scoreToAdd: number) => void
     setScore: (playerToUpdate: Player, score: number) => void,
     updateScoreAll: (scoreToAdd: number) => void,
