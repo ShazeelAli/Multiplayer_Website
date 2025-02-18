@@ -2,11 +2,11 @@ import { use, useEffect, useRef, useState } from "react";
 import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
-import styles from "./FibbageHostStart.module.css"
-import FibbagePlayerDisplay from "../PlayerDisplay/FibbagePlayerDisplay";
+import styles from "./Start.module.css"
+import PlayerDisplay from "../PlayerDisplay/PlayerDisplay";
 import Transition from "../Transition/Transition";
-import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
-import FibbageBGM from "../../BGM";
+import sharedStyles from "components/Games/TruthKingdom/SharedStyles.module.css"
+import BGM from "../../BGM";
 export default function FibbageHostStart({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
 
 
@@ -46,8 +46,8 @@ export default function FibbageHostStart({ roomState, clientWebsocket }: { roomS
     return (
         <div>
             <Transition close={close} open={true}></Transition>
-            <FibbagePlayerDisplay player_names={player_names}></FibbagePlayerDisplay>
-            <FibbageBGM play={playBGM} />
+            <PlayerDisplay player_names={player_names}></PlayerDisplay>
+            <BGM play={playBGM} />
             <div className={styles.inner_container}>
                 {playersRemainingMessage}
                 <button className={sharedStyles.button} onClick={startTutorial} disabled={!(Object.keys(roomState.players).length >= 2)}>START GAME</button>

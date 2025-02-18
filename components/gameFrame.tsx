@@ -93,13 +93,16 @@ export default function gameFrame({ roomState, clientWebsocket, player }: { room
                         host: host,
                         room: roomState
                     }
-
                     IFrameRef.current.contentWindow.postMessage(JSON.stringify(msg))
                     setFrameLoaded(true)
                     break
-                case "relay":
+                case "relayTarget":
                     clientWebsocket.socket.emit('relayTarget', message.targetID, message.data)
                     break
+                case "relay":
+                    clientWebsocket.socket.emit('relay', message.data)
+                case "updateScore":
+
             }
         }
 

@@ -1,12 +1,13 @@
-import PlayerList from "components/playerList";
-import { DOMElement, useEffect, useRef, useState, useMemo } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
-import styles from "./FibbageHostLieChosen.module.css"
-import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
+import styles from "./LieChosen.module.css"
+import sharedStyles from "components/Games/TruthKingdom/SharedStyles.module.css"
 import Transition from "../Transition/Transition";
 import useSound from "use-sound";
+import BGM from "../../BGM";
 export default function FibbageHostLieChosen({ roomState, clientWebsocket, playersChose, lieList, currentQuestion }: { roomState: RoomState, clientWebsocket: clientWebsocket, playersChose: Map<string, Player[]>, lieList: Map<string, Player>, currentQuestion: string[] }) {
     const socket = clientWebsocket.socket
     const [popPlay, popData] = useSound("/TruthKingdom/pop.mp3", { interrupt: true, volume: 1 })
@@ -15,12 +16,20 @@ export default function FibbageHostLieChosen({ roomState, clientWebsocket, playe
     const containerRef = useRef<HTMLDivElement>()
     const [close, setClose] = useState<boolean>(false)
     const playerChoseLieNameRef = useRef<HTMLSpanElement>();
+
+    const [playBGM, setPlayBGM] = useState<boolean>(false)
+    useEffect(() => {
+        setTimeout(() => { setPlayBGM(true) }, 5000)
+    }, [])
+
     const onContinue = () => {
         containerRef.current.classList.add(styles.disappear)
 
         setTimeout(() => {
             setClose(true)
+            setPlayBGM(false)
         }, 1000)
+
         setTimeout(() => {
             socket.emit('relay', {
                 code: "end_lie_viewing"
@@ -141,6 +150,7 @@ export default function FibbageHostLieChosen({ roomState, clientWebsocket, playe
     return (
         <div style={{ height: "100vh", width: "100%", display: "flex", justifyContent: "center" }}>
             <Transition close={close} open={false}></Transition>
+            <BGM play={playBGM}></BGM>
             <div className={styles.container} ref={containerRef}>
 
 

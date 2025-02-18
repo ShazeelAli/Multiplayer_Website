@@ -2,7 +2,7 @@
 import { useEffect, useRef, useMemo } from "react"
 import useSound from "use-sound"
 
-export default function FibbageBGM({ play }: { play: boolean }) {
+export default function BGM({ play }: { play: boolean }) {
     const [BGMPlay, BGMData] = useSound("/TruthKingdom/BackgroundSong.mp3", { interrupt: true, volume: 0.5 })
 
     const BGMIntervalRef = useRef<NodeJS.Timeout | null>(null);

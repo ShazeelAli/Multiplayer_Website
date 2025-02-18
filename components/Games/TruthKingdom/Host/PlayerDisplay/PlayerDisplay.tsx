@@ -1,9 +1,8 @@
 'use client'
 import { useEffect, useState } from "react"
-import Player from "utils/player"
-import styles from "./FibbagePlayerDisplay.module.css"
+import styles from "./PlayerDisplay.module.css"
 import useSound from "use-sound"
-export default function FibbagePlayerDisplay({ player_names }: { player_names: string[] }) {
+export default function PlayerDisplay({ player_names }: { player_names: string[] }) {
     const [popPlay, popData] = useSound("/TruthKingdom/pop.mp3", { interrupt: true, volume: 1 })
     const [windowWidth, setWindowWidth] = useState(0)
     const [windowHeight, setWindowHeight] = useState(0)

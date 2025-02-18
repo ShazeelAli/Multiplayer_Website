@@ -1,4 +1,4 @@
-export enum FibbageStatesEnum {
+export enum GameStates {
     START,
     TUTORIAL,
     LIE_SUBMIT,

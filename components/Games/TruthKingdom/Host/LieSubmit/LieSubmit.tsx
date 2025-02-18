@@ -2,17 +2,27 @@ import { useEffect, useRef, useState } from "react";
 import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
-import styles from "./FibbageHostLieSubmit.module.css"
-import FibbagePlayerDisplay from "../PlayerDisplay/FibbagePlayerDisplay";
+import styles from "./LieSubmit.module.css"
+import PlayerDisplay from "../PlayerDisplay/PlayerDisplay";
 import Transition from "../Transition/Transition";
-
+import useSound from "use-sound";
+import BGM from "../../BGM";
 export default function FibbageHostLieSubmit({ roomState, clientWebsocket, lieList, currentQuestion }: { roomState: RoomState, clientWebsocket: clientWebsocket, lieList: Map<string, Player>, currentQuestion: string[] }) {
     const timerRef = useRef<NodeJS.Timeout>(null)
+    const [playBGM, setPlayBGM] = useState<boolean>(false)
+    const [questionPlay, questionData] = useSound("/TruthKingdom/VoiceLines/Questions/" + currentQuestion[2], { interrupt: true, volume: 1 })
     const [timerRemaining, setTimerRemaining] = useState<number>(71)
     const [close, setClose] = useState<boolean>(false)
     const socket = clientWebsocket.socket
     var amountOfPlayers = Object.keys(roomState.players).length - 1
 
+    useEffect(() => {
+        if (questionData.sound) {
+            setTimeout(questionPlay, 5000)
+            setTimeout(() => { setPlayBGM(true) }, 5000 + questionData.duration)
+        }
+
+    }, [questionData.sound])
 
     useEffect(() => {
         if (lieList.size == amountOfPlayers) {
@@ -61,6 +71,7 @@ export default function FibbageHostLieSubmit({ roomState, clientWebsocket, lieLi
         if (i == newLieList.size) {
             newLieListObject[currentQuestion[1]] = null
         }
+        setPlayBGM(false)
         setClose(true)
         setTimeout(() => {
             socket.emit('relay', {
@@ -81,9 +92,10 @@ export default function FibbageHostLieSubmit({ roomState, clientWebsocket, lieLi
 
     return (
         <div>
+            <BGM play={playBGM}></BGM>
             <Transition close={close} open={true}></Transition>
             <div className={styles.outer_container}>
-                <FibbagePlayerDisplay player_names={player_names}></FibbagePlayerDisplay>
+                <PlayerDisplay player_names={player_names}></PlayerDisplay>
                 <div className={styles.inner_spacing}>
                     <div className={styles.question}>
                         <h1>{currentQuestion[0]}</h1>

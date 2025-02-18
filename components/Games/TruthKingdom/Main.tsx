@@ -3,8 +3,8 @@ import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
 
-import FibbageClient from "./FibbageClient/FibbageClient";
-import FibbageHost from "./FibbageHost/FibbageHost";
+import FibbageClient from "./Client/Client";
+import FibbageHost from "./Host/Host";
 
 import { MedievalSharp } from 'next/font/google'
 export const medieval_sharp = MedievalSharp({ weight: ["400"], subsets: ["latin"], variable: "--font-medieval-sharp" })

@@ -1,9 +1,6 @@
-import PlayerList from "components/playerList";
+
 import { useEffect, useRef, useState } from "react";
-import clientWebsocket from "utils/clientWebsocket";
-import Player from "utils/player";
-import RoomState from "utils/roomState";
-import styles from "./FibbageHostLieChoose.module.css"
+
 
 export default function Timer({ onTimerTick, onTimerEnd, time }: { onTimerTick: CallableFunction, onTimerEnd: CallableFunction, time: number }) {
     const timerRef = useRef<NodeJS.Timeout>(null)

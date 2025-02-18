@@ -5,7 +5,7 @@ import styles from "./Tutorial.module.css"
 
 import Transition from "../Transition/Transition";
 
-import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
+import sharedStyles from "components/Games/TruthKingdom/SharedStyles.module.css"
 import useSound from "use-sound";
 export default function HostTutorial({ clientWebsocket }: { clientWebsocket: clientWebsocket }) {
     const [introPlay, introData] = useSound("/TruthKingdom/VoiceLines/Intro.mp3", { interrupt: true, volume: 1 })

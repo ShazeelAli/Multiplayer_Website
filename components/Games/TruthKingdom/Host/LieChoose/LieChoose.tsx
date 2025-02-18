@@ -1,19 +1,22 @@
-import PlayerList from "components/playerList";
 import { useEffect, useRef, useState } from "react";
 import clientWebsocket from "utils/clientWebsocket";
 import Player from "utils/player";
 import RoomState from "utils/roomState";
-import styles from "./FibbageHostLieChoose.module.css"
-import sharedStyles from "components/Games/FibbageClone/SharedStyles.module.css"
+import styles from "./LieChoose.module.css"
+import sharedStyles from "components/Games/TruthKingdom/SharedStyles.module.css"
 import Transition from "../Transition/Transition";
+import BGM from "../../BGM";
 
-export default function FibbageHostChoose({ roomState, clientWebsocket, lieList, playersChose, amountPlayersChosen, currentQuestion }: { roomState: RoomState, clientWebsocket: clientWebsocket, playersChose: Map<string, Player[]>, lieList: Map<string, Player>, amountPlayersChosen: number, currentQuestion: string[] }) {
+export default function HostChoose({ roomState, clientWebsocket, lieList, playersChose, amountPlayersChosen, currentQuestion }: { roomState: RoomState, clientWebsocket: clientWebsocket, playersChose: Map<string, Player[]>, lieList: Map<string, Player>, amountPlayersChosen: number, currentQuestion: string[] }) {
     const timerRef = useRef<NodeJS.Timeout>(null)
     const [timerRemaining, setTimerRemaining] = useState<number>(60)
     const socket = clientWebsocket.socket
     var amountOfPlayers = Object.keys(roomState.players).length - 1
-    console.log(amountOfPlayers)
 
+    const [playBGM, setPlayBGM] = useState<boolean>(false)
+    useEffect(() => {
+        setTimeout(() => { setPlayBGM(true) }, 5000)
+    }, [])
 
     useEffect(() => {
         if (amountPlayersChosen == amountOfPlayers) {
@@ -57,6 +60,7 @@ export default function FibbageHostChoose({ roomState, clientWebsocket, lieList,
     return (
         <div style={{ height: "100vh", width: "100%", display: "flex", justifyContent: "center" }}>
             <Transition close={false} open={true}></Transition>
+            <BGM play={playBGM}></BGM>
             <div className={styles.container}>
 
                 <div className={[styles.question, sharedStyles.basic].join(" ")}>
