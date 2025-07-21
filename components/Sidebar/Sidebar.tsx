@@ -72,7 +72,10 @@ export default function Sidebar({ roomState, clientWebsocket }: { roomState: Roo
                     }} />
                 </span>
 
-                <hr style={{ border: "5px solid #8a2be2" }}></hr>
+                <hr style={{
+                    border: "5px solid #8a2be2",
+                    margin: "5px"
+                }}></hr>
                 <PlayerList playerList={roomState.players}></PlayerList>
                 <span style={{
                     display: "flex",

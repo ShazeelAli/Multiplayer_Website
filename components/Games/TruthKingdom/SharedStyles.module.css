@@ -1,20 +1,34 @@
 .basic {
-    background-color: burlywood;
-    border: 5px solid brown;
-    border-radius: 10px;
-    font-family: "--font-medieval-sharp";
+  background-color: burlywood;
+  border: 5px solid brown;
+  border-radius: 10px;
+  font-family: "--font-medieval-sharp";
 }
 
 .full {
-    height: 100vh;
+  height: 100vh;
+  font-size: x-large;
 }
 
 .button {
-    background-color: burlywood;
-    border: 5px solid brown;
-    font-family: "--font-medieval-sharp";
+  background-color: burlywood;
+  border: 5px solid brown;
+  font-family: "--font-medieval-sharp";
 }
 
 .button:hover:enabled {
-    background-color: brown;
+  background-color: brown;
+}
+
+.button:disabled {
+  background-color: brown;
+}
+
+.background_client {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: burlywood;
+  height: 100vh;
 }

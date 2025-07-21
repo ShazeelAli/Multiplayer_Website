@@ -62,6 +62,9 @@
 .text_input {
     width: 300px;
     font-size: larger;
+    color: black;
+    background-color: white;
+    border: 5px solid #8a2be2;
 }
 
 .name_label_container {

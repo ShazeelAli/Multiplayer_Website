@@ -18,7 +18,6 @@ export default function Win({ roomState, clientWebsocket }: { roomState: RoomSta
     }, [])
     useEffect(() => {
         var tempTopPlayer: Player = null;
-
         for (const player_name in roomState.players) {
             var player: Player = roomState.players[player_name]
             if (tempTopPlayer == null) {
@@ -29,7 +28,6 @@ export default function Win({ roomState, clientWebsocket }: { roomState: RoomSta
                 }
             }
         }
-
         setTopPlayer(tempTopPlayer)
     }, [roomState])
 
@@ -39,7 +37,7 @@ export default function Win({ roomState, clientWebsocket }: { roomState: RoomSta
             socket.emit('relay', {
                 code: 'restart'
             })
-        }, 2000)
+        }, 5000)
     }
 
     return (

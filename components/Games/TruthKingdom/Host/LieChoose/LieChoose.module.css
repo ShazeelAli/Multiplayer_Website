@@ -1,65 +1,58 @@
 .question {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 10vh;
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
 }
 
 .container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 85%;
-    height: 100vh;
-    transform: scale(0.4);
-    animation: appear 1s 4s normal ease-in-out forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 85%;
+  height: 100vh;
+  transform: scale(0.4);
+  animation: appear 1s 4s normal ease-in-out forwards;
 }
-
-
 
 @keyframes appear {
-    from {
-        transform: scale(0.4);
-    }
+  from {
+    transform: scale(0.4);
+  }
 
-    to {
-        transform: scale(1);
-    }
-
+  to {
+    transform: scale(1);
+  }
 }
 
-
-
 .lie_container {
-    display: grid;
-    height: 60vh;
-    margin: 5vh;
-    width: 100%;
-    grid-template-columns: 33% 33% 33%;
+  display: grid;
+  height: 60vh;
+  margin: 5vh;
+  width: 100%;
+  grid-template-columns: 33% 33% 33%;
 }
 
 .lie {
-    border-radius: 10px;
-    height: 18vh;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: x-large;
+  border-radius: 10px;
+  height: 18vh;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: x-large;
 }
 
 .footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 70%;
-    padding-left: 5%;
-    padding-right: 5%;
-    height: 7vh;
-    align-items: center;
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 70%;
+  padding-left: 5%;
+  padding-right: 5%;
+  height: 7vh;
+  align-items: center;
 }

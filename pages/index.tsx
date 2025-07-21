@@ -5,6 +5,7 @@ import createQuery from "utils/createQuery";
 import styles from "./index.module.css"
 import Image from "next/image";
 import { Atma } from "next/font/google";
+import { Button } from "@/components/ui/button";
 const atma = Atma({ weight: ["700"], subsets: ["latin"], variable: "--font-atma" })
 
 export default function Home() {
@@ -107,8 +108,8 @@ export default function Home() {
         </div>
 
         <div className={styles.button_container}>
-          <button onClick={onPressHost} disabled={!(playerName.trim().length > 0)} > Host </button>
-          <button onClick={onPressJoin} disabled={!validRoom || !(playerName.trim().length > 0)} > Join </button>
+          <Button onClick={onPressHost} disabled={!(playerName.trim().length > 0)} > Host </Button>
+          <Button onClick={onPressJoin} disabled={!validRoom || !(playerName.trim().length > 0)} > Join </Button>
         </div>
       </div>
     </ div >

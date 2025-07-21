@@ -7,11 +7,6 @@ import { SearchParamsContext } from 'next/dist/shared/lib/hooks-client-context.s
 let socket
 
 
-
-
-
-
-
 export default function Home() {
     const router = useRouter()
     const socketRef = useRef(null)

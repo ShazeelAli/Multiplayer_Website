@@ -165,7 +165,6 @@ export default function FibbageHostLieChosen({ roomState, clientWebsocket, playe
                     <button className={sharedStyles.button} onClick={onContinue}>Continue</button>
                 </div>
 
-
             </div >
         </div>
 

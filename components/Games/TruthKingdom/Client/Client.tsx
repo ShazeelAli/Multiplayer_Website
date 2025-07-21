@@ -5,11 +5,11 @@ import RoomState from "utils/roomState";
 
 
 import Start from "./Start";
-import LieSubmit from "./LieSubmit";
-import LieChoose from "./LieChoose";
+import LieSubmit from "./LieSubmit/LieSubmit";
+import LieChoose from "./LieChoose/LieChoose";
 
 import { GameStates } from "../Types";
-
+import SharedStyles from "../SharedStyles.module.css"
 
 
 export default function Client({ roomState, clientWebsocket }: { roomState: RoomState, clientWebsocket: clientWebsocket }) {
@@ -47,7 +47,7 @@ export default function Client({ roomState, clientWebsocket }: { roomState: Room
 
 
     return (
-        <div style={{ width: "100%", height: "100%" }}>
+        <div className={SharedStyles.background_client}>
             {display}
         </div >
 

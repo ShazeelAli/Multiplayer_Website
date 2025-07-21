@@ -76,8 +76,8 @@
 
     10% {
         position: absolute;
-        left: 24%;
-        top: 23vh;
+        left: 27%;
+        top: 30vh;
         /* height: 92vh; */
         height: 41vh;
         /* width: 93%; */
@@ -88,8 +88,8 @@
 
     90% {
         position: absolute;
-        left: 24%;
-        top: 23vh;
+        left: 27%;
+        top: 30vh;
         /* height: 92vh; */
         height: 41vh;
         /* width: 93%; */
@@ -153,6 +153,6 @@
     justify-content: space-between;
     padding-left: 5%;
     padding-right: 5%;
-    height: 7vh;
+    /* height: 7vh; */
     align-items: center;
 }

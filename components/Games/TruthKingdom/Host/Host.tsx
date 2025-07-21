@@ -72,7 +72,6 @@ export default function Host({ roomState, clientWebsocket }: { roomState: RoomSt
                 case "start_game":
                     while (alreadyChosenQuestions.current.includes(currentQuestion.current)) {
                         currentQuestion.current = getRandomInt(questions.length)
-
                     }
                     alreadyChosenQuestions.current.push(currentQuestion.current)
                     setLieList(new Map<string, Player>())
@@ -90,7 +89,6 @@ export default function Host({ roomState, clientWebsocket }: { roomState: RoomSt
                         newLieList.set(answer, answerList[answer])
                     }
                     var newPlayersChose: Map<string, Player[]> = new Map<string, Player[]>()
-
                     setLieList(newLieList)
                     setPlayersChose(newPlayersChose)
                     setGameState(GameStates.LIE_CHOOSE)
