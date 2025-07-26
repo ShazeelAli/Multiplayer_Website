@@ -49,6 +49,7 @@ export enum GamesEnum {
   CHATROOM,
   TRUTHKINGDOM,
   CATPLATFORMER,
+  AIRPLANE,
 }
 
 export const GamesFull = new Map<GamesEnum, Game>([
@@ -65,10 +66,19 @@ export const GamesFull = new Map<GamesEnum, Game>([
   [
     GamesEnum.CATPLATFORMER,
     new Game(
-      "Cat Platformer",
+      "Save The Kittens",
       GameType.GODOT,
       false,
       "/WebRTCTestIFrame2/WebRTCTest.html"
+    ),
+  ],
+  [
+    GamesEnum.AIRPLANE,
+    new Game(
+      "Are We There Yet KiwiJam2025",
+      GameType.GODOT,
+      false,
+      "/AreWeThereYet/AreWeThereYet.html"
     ),
   ],
 ]);
