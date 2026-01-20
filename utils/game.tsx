@@ -1,5 +1,5 @@
 import Loading from "components/Games/Loading";
-import Chatroom from "components/Games/Chatroom";
+import Chatroom from "@/components/Games/Chatroom/Chatroom";
 import FibbageMain from "components/Games/TruthKingdom/Main";
 import RoomState from "./roomState";
 import ClientWebsocket from "./clientWebsocket";

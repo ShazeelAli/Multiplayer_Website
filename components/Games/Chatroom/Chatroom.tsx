@@ -17,14 +17,11 @@ export default function Chatroom({
   var message: string = "";
 
   useEffect(() => {
-    socket.on("relayReceive", (msg) => {
+    socket.on("CH_message", (sender, senderRTCID, msg) => {
       console.log(msg);
-      var playerName = msg["player"].name;
+      var playerName = sender.name;
 
-      setMsgList([
-        ...msgList,
-        <div key={msg["message"]}>{playerName + ":" + msg["message"]}</div>,
-      ]);
+      setMsgList([...msgList, <div key={msg}>{playerName + ":" + msg}</div>]);
     });
   }, []);
 
@@ -39,9 +36,7 @@ export default function Chatroom({
   };
 
   const sendMessage = () => {
-    socket.emit("relay", {
-      message: message,
-    });
+    socket.emit("relay", "CH_message", message);
   };
 
   return (

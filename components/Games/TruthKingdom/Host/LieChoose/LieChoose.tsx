@@ -45,9 +45,7 @@ export default function HostChoose({
       clearInterval(timerRef.current);
       timerRef.current = null;
     }
-    socket.emit("relay", {
-      code: "lies_chosen",
-    });
+    socket.emit("relay", "TK_lies_chosen");
   };
 
   useEffect(() => {

@@ -67,7 +67,7 @@ export default function gameFrame({
 
   useEffect(() => {
     if (socket != null) {
-      socket.on("relayReceive", (msg) => {
+      socket.on("godotRelayReceive", (msg) => {
         if (frameLoaded) {
           received_packet(msg);
         } else {
@@ -120,11 +120,12 @@ export default function gameFrame({
           clientWebsocket.socket.emit(
             "relayTarget",
             message.targetID,
+            "godotRelay",
             message.data
           );
           break;
         case "relay":
-          clientWebsocket.socket.emit("relay", message.data);
+          clientWebsocket.socket.emit("relay", "godotRelay", message.data);
         case "updateScore":
       }
     };

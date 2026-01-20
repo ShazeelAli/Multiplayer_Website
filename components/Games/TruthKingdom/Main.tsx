@@ -21,11 +21,6 @@ export default function FibbageMain({
   roomState: RoomState;
   clientWebsocket: clientWebsocket;
 }) {
-  const chatAreaRef = useRef<HTMLDivElement>();
-  const [msgList, setMsgList] = useState<JSX.Element[]>([]);
-  const [canSend, setCanSend] = useState<boolean>(false);
-  var socket = clientWebsocket.socket;
-  var message: string = "";
   var display = (
     <FibbageClient
       roomState={roomState}
