@@ -73,17 +73,19 @@ export default function FibbageHostLieSubmit({
     newLieList.forEach((player, answer) => {
       console.log(i);
       if (i == randomInsert) {
-        newLieListObject[currentQuestion[1]] = null;
+        newLieList[currentQuestion[1]] = null;
       } else {
         i++;
       }
-      newLieListObject[answer] = newLieList.get(answer);
+      newLieList[answer] = newLieList.get(answer);
     });
     if (i == newLieList.size) {
-      newLieListObject[currentQuestion[1]] = null;
+      newLieList[currentQuestion[1]] = null;
     }
     setPlayBGM(false);
     setClose(true);
+    console.log("New Lie List");
+    console.log(newLieList);
     setTimeout(() => {
       socket.emit("relay", "TK_lies_submission_finished", newLieList);
     }, 3000);

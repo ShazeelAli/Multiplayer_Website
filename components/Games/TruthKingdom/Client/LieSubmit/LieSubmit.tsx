@@ -23,8 +23,8 @@ export default function FibbageClientLieSubmit({
       roomState.host.id,
       "TK_lie_submit",
       lieMsgRef.current,
-      () => {
-        setSubmitted(true);
+      (err: Error, status: boolean) => {
+        setSubmitted(status);
       }
     );
   };
