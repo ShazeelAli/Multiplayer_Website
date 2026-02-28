@@ -150,8 +150,6 @@ export default function Host({
     });
 
     socket.on("TK_lie_submit", (sender, senderRTCid, lie, ack) => {
-      console.log(ack);
-      console.log(lie);
       setLieList(new Map<string, Player>(lieList.set(lie, sender)));
       ack(true);
     });
