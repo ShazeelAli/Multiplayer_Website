@@ -63,7 +63,7 @@ const SocketHandler = (req, res) => {
   if (res.socket.server.io) {
   } else {
     const io = new Server<ClientToServerEvents, ServerToClientEvents>(
-      res.socket.server
+      res.socket.server,
     );
     res.socket.server.io = io;
 
@@ -78,7 +78,7 @@ const SocketHandler = (req, res) => {
         var room = new RoomState(
           create_room_code(),
           GamesEnum.LOBBY,
-          clients.get(socket)
+          clients.get(socket),
         );
         room.addPlayer(clients.get(socket));
         rooms.set(room.roomCode, room);
@@ -124,7 +124,7 @@ const SocketHandler = (req, res) => {
           eventName as keyof P2PEvents,
           player,
           player.webRTCID,
-          args
+          args,
         );
       });
 
@@ -132,9 +132,30 @@ const SocketHandler = (req, res) => {
         var player: Player = clients.get(socket);
         var room: RoomState = rooms.get(player.room_code);
         var targetSocket = io.sockets.sockets.get(targetID);
+
+        var originalAck;
+        if (typeof args[args.length - 1] == "function") {
+          console.log("Wrapping ACK");
+
+          originalAck = args.pop();
+        }
         targetSocket
           .timeout(1000)
-          .emit(eventName as keyof P2PEvents, player, player.webRTCID, args);
+          .emit(
+            eventName as any,
+            player,
+            player.webRTCID,
+            ...args,
+            (err: Error | null, ...responseArgs: any[]) => {
+              if (!originalAck) return;
+
+              if (err) {
+                originalAck(err);
+              } else {
+                originalAck(null, ...responseArgs);
+              }
+            },
+          );
       });
 
       socket.on("disconnect", () => {
@@ -199,7 +220,7 @@ function createPlayer(playerName, socket) {
 
 function syncRoomState(
   io: Server<ClientToServerEvents, ServerToClientEvents>,
-  roomToSync: RoomState
+  roomToSync: RoomState,
 ) {
   io.to(roomToSync.roomCode).emit("updateRoomState", roomToSync);
 }

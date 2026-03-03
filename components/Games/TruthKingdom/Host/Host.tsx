@@ -22,10 +22,10 @@ export default function Host({
 }) {
   const [gameState, setGameState] = useState<GameStates>(GameStates.START);
   const [lieList, setLieList] = useState<Map<string, Player>>(
-    new Map<string, Player>()
+    new Map<string, Player>(),
   );
   const [playersChose, setPlayersChose] = useState<Map<string, Player[]>>(
-    new Map<string, Player[]>()
+    new Map<string, Player[]>(),
   );
   const [amountPlayersChosen, setAmountPlayersChosen] = useState<number>(0);
 
@@ -74,6 +74,7 @@ export default function Host({
   var display = (
     <Start roomState={roomState} clientWebsocket={clientWebsocket}></Start>
   );
+
   switch (gameState) {
     case GameStates.TUTORIAL:
       display = <HostTutorial clientWebsocket={clientWebsocket}></HostTutorial>;
@@ -150,6 +151,8 @@ export default function Host({
     });
 
     socket.on("TK_lie_submit", (sender, senderRTCid, lie, ack) => {
+      console.log("Type of ack" + typeof ack);
+
       setLieList(new Map<string, Player>(lieList.set(lie, sender)));
       ack(true);
     });
@@ -168,7 +171,7 @@ export default function Host({
         setLieList(newLieList);
         setPlayersChose(newPlayersChose);
         setGameState(GameStates.LIE_CHOOSE);
-      }
+      },
     );
 
     socket.on("TK_lie_chose", (sender, senderRTCid, lie, ack) => {
